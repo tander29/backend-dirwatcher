@@ -59,7 +59,7 @@ def find_string_in_files(file, magictext):
                     found_magic_text[file_base] = line_number
                 if (line_number >= found_magic_text[file_base]
                         and file_base in found_magic_text.keys()):
-                    logger.info('Text: "{0}" found in file: {1}, on '
+                    logger.info('Text="{0}" file="{1}" '
                                 'line: {2}'.format(magictext,
                                                    file_base,
                                                    line_number + 1))
@@ -128,7 +128,7 @@ def main(input_args):
     signal.signal(signal.SIGTERM, signal_handler)
     count = 0
     while not exit_flag:
-        logger.debug('Searching...file: {0} ext: {1}, text: {2}, seconds: {3}'
+        logger.debug('Searching file="{0}" ext="{1}" text="{2}" seconds={3}'
                      .format(input_args.directory, input_args.extension,
                              input_args.magictext, input_args.poll))
         try:
