@@ -128,9 +128,9 @@ def main(input_args):
     signal.signal(signal.SIGTERM, signal_handler)
     count = 0
     while not exit_flag:
-        logger.info('Searching...file: {0} ext: {1}, text: {2}, seconds: {3}'
-                    .format(input_args.directory, input_args.extension,
-                            input_args.magictext, input_args.poll))
+        logger.debug('Searching...file: {0} ext: {1}, text: {2}, seconds: {3}'
+                     .format(input_args.directory, input_args.extension,
+                             input_args.magictext, input_args.poll))
         try:
             # if os.path.isdir(input_args.directory):
             find_files(input_args.directory,
