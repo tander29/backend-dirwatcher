@@ -39,7 +39,8 @@ def find_files(directory, extension, magictext):
             files_logged.append(file)
         if file.endswith(extension):
             file_path = os.path.join(directory_abspath, file)
-            find_string_in_files(file_path, magictext)
+            if find_string_in_files(file_path, magictext):
+                break
     for file in files_logged:
         if file not in all_files_in_directory:
             logger.info('File deleted: {}'.format(file))
@@ -64,10 +65,11 @@ def find_string_in_files(file, magictext):
                                                    file_base,
                                                    line_number + 1))
                     found_magic_text[file_base] += 1
+                    return True
 
 
 def log_config():
-    """Adjusts how info is displayed in log """
+    """Adjusts how info is displayed in log"""
     return logging.basicConfig(
         format=(
             '%(asctime)s.%(msecs)03d %(name)-12s %(levelname)-8s %(message)s'),
@@ -75,12 +77,12 @@ def log_config():
 
 
 def log_set_level():
-    """Sets defaulf log level """
+    """Sets defaulf log level"""
     logger.setLevel(logging.DEBUG)
 
 
 def logger_banner(startorend, time, start=True):
-    """ Log banner start/end """
+    """Log banner start/end"""
     time_message = 'Time Started'
     if not start:
         time_message = 'Up time'
@@ -96,13 +98,13 @@ def logger_banner(startorend, time, start=True):
 
 
 def logger_initiate():
-    """ Iniates the logger boiler plate """
+    """Iniates the logger boiler plate"""
     log_config()
     log_set_level()
 
 
 def signal_handler(sig_num, frame):
-    """Smooth exit from system """
+    """Smooth exit from system"""
     global exit_flag
     logger.warn('Received Signal from Space Command: {}'.format(str(sig_num)))
     if sig_num:
@@ -110,7 +112,7 @@ def signal_handler(sig_num, frame):
 
 
 def create_parser():
-    """Create Parser that accepts """
+    """Create Parser that accepts"""
     parser = argparse.ArgumentParser(description='Taking names')
     parser.add_argument('magictext', help='Text to search for')
     parser.add_argument(
@@ -123,7 +125,7 @@ def create_parser():
 
 
 def main(input_args):
-    """Currently only prints the files in a directory with extention """
+    """Currently only prints the files in a directory with extention"""
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
     count = 0
@@ -147,7 +149,7 @@ def main(input_args):
 
 
 if __name__ == "__main__":
-    """Accepts parser, initiates logger, runs banners """
+    """Accepts parser, initiates logger, runs banners"""
     # python dirwatcher.py 3 string '.txt' searchhere
     parser = create_parser()
     input_args = parser.parse_args()
